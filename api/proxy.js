@@ -23,9 +23,13 @@ export default async function handler(request) {
   try {
     const response = await fetch(targetUrl.toString(), fetchOptions);
 
+    if (response.redirected && (response.url.includes('serveo.net') || response.url === 'https://serveo.net/')) {
+      return serveOfflinePage();
+    }
+
     if (response.status === 302 || response.status === 301 || response.status === 307 || response.status === 308) {
-      const location = response.headers.get('location');
-      if (location && (location.includes('serveo.net') || location === 'https://serveo.net/')) {
+      const location = response.headers.get('location') || response.headers.get('Location');
+      if (location && (location.toLowerCase().includes('serveo.net') || location === 'https://serveo.net/')) {
         return serveOfflinePage();
       }
     }
