@@ -11,13 +11,17 @@ export default async function handler(request) {
   headers.set("Host", targetUrl.host);
   headers.delete("x-forwarded-host");
 
+  const fetchOptions = {
+    method: request.method,
+    headers: headers,
+    redirect: 'manual'
+  };
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    fetchOptions.body = request.body;
+  }
+
   try {
-    const response = await fetch(targetUrl.toString(), {
-      method: request.method,
-      headers: headers,
-      body: request.body,
-      redirect: 'manual'
-    });
+    const response = await fetch(targetUrl.toString(), fetchOptions);
 
     if (response.status === 302 || response.status === 301 || response.status === 307 || response.status === 308) {
       const location = response.headers.get('location');

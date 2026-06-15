@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "https://ms-f80f143f.serveo.net/$1" }
+    { "source": "/((?!api/).*)", "destination": "/api/proxy" }
   ]
 }
