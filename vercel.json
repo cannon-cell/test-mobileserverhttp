@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/:path*", "destination": "https://ms-f80f143f.serveo.net/:path*" }
+  ]
+}
